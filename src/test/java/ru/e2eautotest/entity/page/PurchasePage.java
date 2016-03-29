@@ -5,6 +5,7 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import ru.e2eautotest.entity.LoggerWrapper;
+import ru.e2eautotest.entity.account.UserAccount;
 
 public class PurchasePage extends Page{
     private static final LoggerWrapper LOG = LoggerWrapper.get(PurchasePage.class);
@@ -16,9 +17,8 @@ public class PurchasePage extends Page{
     /*
     Кнопки изменить и продолжить
     */
-
     //Кнопка "изменить" у модуля "Способ получения товара"
-    @FindBy(css = "div.nc-delivery-item.clearfix")
+    @FindBy(xpath = "//a[text()=\"Изменить\"][1]")
     private WebElement editDeliveryBlockBtn;
 
     //Кнопка "продолжить" у модуля "Способ получения товара"
@@ -26,7 +26,8 @@ public class PurchasePage extends Page{
     private WebElement closeDeliveryBlockBtn;
 
     //Кнопка "изменить" у модуля "Личные данные"
-    @FindBy(xpath= "//*[@id=\"personal-form\"]/div/div[2]/div/div[3]/a")
+    // //div[contains(@class, 'nc-personal-item clearfix')]/div[3]/a
+    @FindBy(xpath= "/html/body/div[1]/div/div[2]/div/div/div[3]/div/div[2]/div[5]/div/form/div/div[2]/div/div[3]/a")
     private WebElement editPersonalBlockBtn;
 
     //Кнопка "продолжить" у модуля "Личные данные"
@@ -34,7 +35,7 @@ public class PurchasePage extends Page{
     private WebElement closePersonalBlockBtn;
 
     //Кнопка "изменить" у модуля "Cпособ оплаты"
-    @FindBy(xpath = "(//a[contains(text(),'Изменить')])[3]")
+    @FindBy(xpath = "/html/body/div[1]/div/div[2]/div/div/div[3]/div/div[2]/div[6]/div/form/div/div[2]/div/div/div[3]/a")
     private WebElement editPaymentBlockBtn;
 
     //Кнопка "продолжить" у модуля "Cпособ оплаты"
@@ -48,7 +49,6 @@ public class PurchasePage extends Page{
     /*
     Блок личные данные
     */
-
     //Поле "email"
     @FindBy(id = "email")
     private WebElement mailEdit;
@@ -62,7 +62,7 @@ public class PurchasePage extends Page{
     private WebElement phoneEdit;
 
     //Чекбокс "Подтверждение политики конф"
-    @FindBy(css = "#personal-form > div > div:nth-child(2) > div > div.nc-order-personal > div > div.control-group.closed > label.label-checkbox > span")
+    @FindBy(css = "label.label-checkbox")
     private WebElement politConfCheckbox;
 
     /*
@@ -70,17 +70,22 @@ public class PurchasePage extends Page{
     */
 
     //Оплата при получении
-
-    @FindBy(css = "#payment-form > div > div:nth-child(3) > div.nc-payment > div > div.nc-payment-item.nc-ondelivery-item.clearfix > div.nc-order-details-graphics-holder > label.label-radio > span")
+    //@FindBy(id = "checkout-payment-ondelivery")
+    @FindBy(xpath = "/html/body/div[1]/div/div[2]/div/div/div[3]/div/div[2]/div[6]/div/form/div/div[2]/div[1]/div/div[2]/div[1]/label[1]/span")
     private WebElement onDeliveryRadio;
 
     //Онлайн-оплата
-    @FindBy(css = "#payment-form > div > div:nth-child(3) > div.nc-payment > div > div.nc-payment-item.nc-card-item.clearfix > div.nc-order-details-graphics-holder > label.label-radio > span")
+    //@FindBy(id = "checkout-payment-card")
+    @FindBy(xpath = "/html/body/div[1]/div/div[2]/div/div/div[3]/div/div[2]/div[6]/div/form/div/div[2]/div[1]/div/div[3]/div[1]/label[1]/span")
     private WebElement cardRadio;
 
     /*
     Блок доставки. Элементы курьерки
     */
+
+    //Пикап
+    @FindBy(xpath = "/html/body/div[1]/div/div[2]/div/div/div[3]/div/div[2]/div[4]/div[1]/form/div/div/div[2]/div[1]/div/div[1]/div[1]/label[1]/span")
+    private WebElement pickupRadio;
 
     //Доставка курьером
     @FindBy(xpath = "//*[@id=\"delivery-form\"]/div/div/div[2]/div[1]/div/div[2]/div[1]/label[1]/span")
@@ -103,8 +108,8 @@ public class PurchasePage extends Page{
     private WebElement apartmentEdit;
 
     //Поле "Адресс доставки"
-    @FindBy(xpath = "//*[@id=\"delivery-form\"]/div/div/div[2]/div[1]/div/div[2]/div[4]/div/div/div[1]")
-    private WebElement addressEdit;
+    @FindBy(css = "div.nc-delivery-additional-info > p.nc-offer-delivery-date")
+    private WebElement courierAddress;
 
     //Кнопка "Далее"
     @FindBy(xpath = "//*[@id=\"delivery-form\"]/div/div/div[2]/div[1]/div/div[2]/div[3]/div[5]/a")
@@ -125,6 +130,16 @@ public class PurchasePage extends Page{
         return this;
     }
 
+    //Выбрать пикап
+    public PurchasePage setPickUpDelivery(String storeName){
+        LOG.debug("Выбираем пикап");
+        pickupRadio.click();
+
+        //тут добавить магазин
+
+        return this;
+    }
+
     //Выбрать доставку курьером
     public PurchasePage setCourierDelivery(String city, String street, String house, String apartament){
         LOG.debug("Выбираем доставку курьером");
@@ -141,13 +156,15 @@ public class PurchasePage extends Page{
     //Провериить, что система запомнила адресс доставки и время
     public PurchasePage checkCourierAddress(String city, String street, String house, String apartament){
         LOG.debug("Проверяем возможность системы запомнить адресс доставки и время");
-        editDeliveryBlock();
 
         String expected = String.format("%s, %s, %s, %s", city, street, house, apartament);
+        try {
+            Thread.sleep(1000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        assertEquals(expected, courierAddress);
 
-        assertEquals(expected, addressEdit);
-
-        closeDeliveryBlock();
         return this;
     }
 
@@ -155,14 +172,9 @@ public class PurchasePage extends Page{
     public PurchasePage openDeliveryBlock(){
         LOG.debug("Раскрываем блок \"Способ получения товара\"");
         try{
-            Thread.sleep(10000);
-            LOG.debug(editDeliveryBlockBtn.getText());
             scrollToElement(editDeliveryBlockBtn);
-            editDeliveryBlockBtn.findElement(By.cssSelector("input[data-form-action=changeDelivery]")).click();
-        }catch (Exception e){
-            LOG.debug(e.toString());
-            System.out.println("zzz");
-        }
+            editDeliveryBlockBtn.click();
+        }catch (Exception e){}
         return this;
     }
 
@@ -194,12 +206,12 @@ public class PurchasePage extends Page{
     }
 
     //Редактируем блок "Личные данные"
-    public PurchasePage editPersonalBlock(String email, String name, String phone){
+    public PurchasePage editPersonalBlock(UserAccount user){
         LOG.debug("Редактируем блок \"Личные данные\"");
 
-        clearAndSendKey(mailEdit, email);
-        clearAndSendKey(nameEdit, name);
-        clearAndSendKey(phoneEdit, phone);
+        clearAndSendKey(mailEdit, user.getMail());
+        clearAndSendKey(nameEdit, user.getName());
+        clearAndSendKey(phoneEdit, user.getMobile());
 
         scrollToElement(politConfCheckbox);
         politConfCheckbox.click();

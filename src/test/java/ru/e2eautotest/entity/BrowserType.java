@@ -6,9 +6,9 @@ import org.openqa.selenium.firefox.FirefoxDriver;
 import org.openqa.selenium.ie.InternetExplorerDriver;
 
 public enum BrowserType {
-    IE(new InternetExplorerDriver()),
+    IE(null),
     FF(new FirefoxDriver()),
-    CH(new ChromeDriver());
+    CH(null);
 
     private final WebDriver driver;
 

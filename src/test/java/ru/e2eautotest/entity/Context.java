@@ -5,10 +5,6 @@ import org.openqa.selenium.WebDriver;
 import java.util.concurrent.TimeUnit;
 
 public class Context {
-    public static final String BROWSER_IE = "*iexplore";
-    public static final String BROWSER_FF = "*firefox";
-    public static final String BROWSER_CH = "*chrome";
-
     private static Context context;
     private static String siteUrl;
 

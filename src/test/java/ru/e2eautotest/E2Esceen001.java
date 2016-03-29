@@ -3,8 +3,6 @@ package ru.e2eautotest;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
-import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.firefox.FirefoxDriver;
 import ru.e2eautotest.entity.BrowserType;
 import ru.e2eautotest.entity.CityType;
 import ru.e2eautotest.entity.Context;
@@ -12,8 +10,6 @@ import ru.e2eautotest.entity.LoggerWrapper;
 import ru.e2eautotest.entity.page.*;
 import ru.e2eautotest.entity.account.UserAccount;
 import ru.e2eautotest.entity.page.mail.MailManager;
-
-import java.util.concurrent.TimeUnit;
 
 public class E2Esceen001 {
     private static final LoggerWrapper LOG = LoggerWrapper.get(E2Esceen001.class);
@@ -48,14 +44,14 @@ public class E2Esceen001 {
                 selectProduct().checkDescription().addToBasket(). //openStoreListAndFindStoreAndAddProduct(storeAddress).
                 checkoutOrderForGuest().checkoutWithoutRegister().
                 editDeliveryBlock().
-                setCourierDelivery("Москва", "Улица", "Дом", "Кв").
-                closeDeliveryBlock().
-                editPersonalBlock(user.getMail(), user.getName(), user.getMobile()).closePersonalBlock().
-                //openDeliveryBlock().openPersonalBlock();
-                editPaymentBlock().
-                closePaymentBlock().completeOrder().checkOrderSummary().register(user.getPassword()).
+                setCourierDelivery("Москва", "Улица", "Дом", "Кв").closeDeliveryBlock().
+                checkCourierAddress("Москва", "Улица", "Дом", "Кв").
+                editPersonalBlock(user).closePersonalBlock().
+                editPaymentBlock().closePaymentBlock().
+                completeOrder().checkOrderSummary().register(user.getPassword()).
                 checkedMsgfirstAutoLoginAfterRegistration(user.getName()).
                 checkedMsgInNotVerifiedProfile(user.getName());
+
         //Подтверждение регистрации
 
         MailManager mailManager = new MailManager();
