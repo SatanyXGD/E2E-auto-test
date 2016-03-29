@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!-- configuration -->
+<notification_messages>
+    <register_page>
+        <user>
+            <name>
+                <send>Укажите имя</send>
+                <incorrect>Имя имеет неверный формат</incorrect>
+            </name>
+            <email>
+                <send>Укажите email</send>
+                <incorrect>E-mail имеет неверный формат</incorrect>
+            </email>
+            <surname>
+                <send>Укажите фамилию</send>
+                <incorrect>Фамилия имеет неверный формат</incorrect>
+            </surname>
+            <phone>
+                <send>Укажите номер телефона</send>
+                <incorrect>Номер телефона имеет неверный формат</incorrect>
+            </phone>
+            <password>
+                <send>Укажите пароль</send>
+                <incorrect>Пароль имеет неверный формат.</incorrect>
+                <not_match>Пароли не совпадают</not_match>
+            </password>
+        </user>
+        <firm>
+            <name>
+                <send>Укажите название организации или ИП</send>
+                <incorrect>Название организации или ИП имеет неверный формат</incorrect>
+            </name>
+            <contact>
+                <incorrect>Контактное лицо имеет неверный формат</incorrect>
+            </contact>
+            <email>
+                <send>Укажите email</send>
+                <incorrect>E-mail имеет неверный формат</incorrect>
+            </email>
+            <address>
+                <send>Укажите юридический адрес</send>
+                <incorrect>Юридический адрес имеет неверный формат</incorrect>
+            </address>
+            <bank>
+                <send>Укажите банк</send>
+                <incorrect>Банк имеет неверный формат</incorrect>
+            </bank>
+            <settlement>
+                <send>Укажите расчетный счет</send>
+                <incorrect>Расчетный счет имеет неверный формат</incorrect>
+            </settlement>
+            <cor>
+                <send>Укажите счет</send>
+                <incorrect>Счет имеет неверный формат</incorrect>
+            </cor>
+            <inn>
+                <send>Укажите ИНН</send>
+                <incorrect>ИНН имеет неверный формат</incorrect>
+            </inn>
+            <kpp>
+                <send>Укажите КПП</send>
+                <incorrect>КПП имеет неверный формат</incorrect>
+            </kpp>
+            <bik>
+                <send>Укажите БИК банка</send>
+                <incorrect>БИК банка имеет неверный формат</incorrect>
+            </bik>
+            <okdp>
+                <incorrect>ОКДП имеет неверный формат</incorrect>
+            </okdp>
+            <okpo>
+                <incorrect>ОКПО имеет неверный формат</incorrect>
+            </okpo>
+            <okonx_okved>
+                <incorrect>ОКОНХ/ОКВЭД имеет неверный формат</incorrect>
+            </okonx_okved>
+            <website>
+                <incorrect>Сайт компании имеет неверный формат</incorrect>
+            </website>
+        </firm>
+    </register_page>
+    <final_verification>
+        <thanks>Спасибо, %s!</thanks>
+        <mail_verified>Вы успешно подтвердили адрес электронной почты.</mail_verified>
+        <congratulation>Поздравляем!</congratulation>
+    </final_verification>
+    <my_profile>
+        <congratulation>Поздравляем, %s!</congratulation>
+        <final_registration>Вы успешно зарегистрировались на сайте «М.Видео».</final_registration>
+        <how_verified>Чтобы активировать учётную запись, пройдите по ссылке в письме. Неподтверждённая учётная запись будет удалена через 10 дней.</how_verified>
+        <please_confirm>Пожалуйста, подтвердите регистрацию!</please_confirm>
+        <welcome>Здравствуйте, %s, добро пожаловать в Ваш личный кабинет.</welcome>
+    </my_profile>
+    <email_confirm>
+        <thanks>Спасибо, %s!</thanks>
+        <verified_succes>Вы успешно подтвердили адрес электронной почты.</verified_succes>
+        <already_verified>Спасибо, Ваш адрес электронной почты уже подтверждён.</already_verified>
+        <congratulation>Поздравляем!</congratulation>
+    </email_confirm>
+</notification_messages>
