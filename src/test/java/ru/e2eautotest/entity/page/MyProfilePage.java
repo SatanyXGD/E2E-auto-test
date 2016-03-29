@@ -17,7 +17,7 @@ public class MyProfilePage extends Page {
     private By howVerified = By.cssSelector("p.bc-top-text");
 
     public MyProfilePage(WebDriver driver) {
-        super(driver, "mvideo");//"my-account");
+        super(driver, "my-account");
     }
 
     /*

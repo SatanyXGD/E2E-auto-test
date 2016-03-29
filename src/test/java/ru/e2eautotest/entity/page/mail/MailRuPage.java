@@ -10,6 +10,7 @@ import ru.e2eautotest.entity.page.account.Account;
 import java.text.DateFormatSymbols;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.List;
 import java.util.Locale;
 
 public class MailRuPage extends Page implements Mail {
@@ -51,7 +52,7 @@ public class MailRuPage extends Page implements Mail {
     Регистрация почтового ящика
     @param user - {@link UserAccount}
     */
-    public void registration(Account account) {
+    public MailRuPage registration(Account account) {
         LOG.debug("Регистрация почты");
         /*driver.get("https://e.mail.ru/signup?from=main&rf=mail.ru");
         driver.manage().window().maximize();
@@ -60,19 +61,21 @@ public class MailRuPage extends Page implements Mail {
         driver.findElement(By.id("x_4114c810fa61a495")).clear();
         driver.findElement(By.id("x_4114c810fa61a495")).sendKeys("sdf");
         driver.findElement(By.id("man1")).click();*/
+
+        return this;
     }
 
     /*
     Логин
     @param user - {@link UserAccount}
     */
-    public void login(Account account) {
+    public MailRuPage login(Account account) {
         LOG.debug("logIn");
-
         getDriver().get(getBaseURL());
         clearAndSendKey(mailEdit, account.getMail());
         clearAndSendKey(passwordEdit, account.getPassword());
         authButton.click();
+        return this;
     }
 
     /*
@@ -80,43 +83,69 @@ public class MailRuPage extends Page implements Mail {
     @param user - {@link UserAccount}
     @return {@link MyProfilePage}
     */
-    public void logOut() {
+    public MailRuPage logOut() {
         LOG.debug("logOut");
-
         getDriver().get("https://auth.mail.ru/cgi-bin/logout");
+        return this;
     }
 
     /*
     Подтверждение пользователя по письму
     */
-    public void findMailAndVerifyRegistration() {
+    public MailRuPage findMailAndVerifyRegistration() {
         LOG.debug("Подтверждение пользователя по письму");
+        WebElement mail = findMail("Пожалуйста, подтвердите вашу регистрацию");
+        scrollToElement(mail);
+        getDriver().get(String.format("https://e.mail.ru/message/%s", mail.getAttribute("data-id")));
+        getDriver().get(acceptButton.getAttribute("href"));
+        return this;
+    }
+
+    //Поиск письма с информацией о заказе
+    public MailRuPage findOrderMail(){
+        LOG.debug("Поиск письма с заказом");
+        WebElement mail = findMail("Ваш заказ принят");
+
+        scrollToElement(mail);
+        getDriver().get(String.format("https://e.mail.ru/message/%s", mail.getAttribute("data-id")));
+        return this;
+    }
+
+    //Поиск письма по заголовку
+    private WebElement findMail(String header) {
+        LOG.debug("Поиск письма \"" + header + "\"");
 
         clearAndSendKey(findEdit, "uat_atg@mvideo.ru");
         searchButton.click();
 
-        WebElement mail = findElement(mailLocator);
+        List<WebElement> mails = findElements(mailLocator);
+        LOG.debug("Найдено " + mails.size() + " элементов");
 
-        //проверка, что нашлось то самое письмо
-        WebElement link = mail.findElement(By.cssSelector("div > a"));
-        if (!isTrueMessage(link)) throw new IllegalArgumentException("Не пришло письмо");
+        WebElement result = null;
+        for(WebElement mail : mails) {
+            //проверка, что нашлось то самое письмо
+            WebElement link = mail.findElement(By.cssSelector("div > a"));
+            if (isTrueMessage(link, header)) {
+                result = mail;
+                break;
+            }
+        }
+        if(result == null) throw new IllegalArgumentException("Не пришло письмо");
 
-        scrollToElement(mail);
-
-        getDriver().get(String.format("https://e.mail.ru/message/%s", mail.getAttribute("data-id")));
-        getDriver().get(acceptButton.getAttribute("href"));
+        return result;
     }
 
     /*
-    Преверка, что мы нашли верное письмо
+    Проверка, что мы нашли верное письмо
     @param element - {@link WebElement}
     @return {@link Boolean}
     */
-    private Boolean isTrueMessage(WebElement element) {
-        if (!element.getAttribute("data-subject").contains("Пожалуйста, подтвердите вашу регистрацию")) return false;
-
+    private Boolean isTrueMessage(WebElement element, String header) {
+        LOG.debug("Проверка, что мы нашли верное письмо");
+        if (!element.getAttribute("data-subject").contains(header)) return false;
+        LOG.debug("Проверка даты");
         WebElement data = element.findElement(By.cssSelector("div.b-datalist__item__panel > div.b-datalist__item__date > span"));
-        Locale local = new Locale("ru", "RU");
+       /* Locale local = new Locale("ru", "RU");
         String[] russianMonat = {
                 "января",
                 "февраля",
@@ -136,8 +165,10 @@ public class MailRuPage extends Page implements Mail {
         SimpleDateFormat sdf = new SimpleDateFormat("d MMMM", russSymbol);
         Date currentDate = new Date();
 
-        if (!data.getAttribute("title").contains(sdf.format(currentDate))) return false;
+        if (!data.getAttribute("title").contains(sdf.format(currentDate))) return false;*/
+        if (!data.getAttribute("title").contains("Сегодня")) return false;
 
+        LOG.debug("Дата соответствует");
         return true;
     }
 }

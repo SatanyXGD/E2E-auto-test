@@ -16,9 +16,8 @@ public class E2Esceen001 {
     private static final LoggerWrapper LOG = LoggerWrapper.get(E2Esceen001.class);
 
     public static WebDriver driver;
-    private static String url = "https://www.atguat4.mvideo.ru/";
+    private static String url = "https://www.atguat6.mvideo.ru/";
     private CityType cityType1;
-    private CityType cityType2;
     private String departament;
     private String category;
     private String storeAddress;
@@ -32,12 +31,11 @@ public class E2Esceen001 {
         driver.manage().timeouts().implicitlyWait(8, TimeUnit.SECONDS);
 
         cityType1 = CityType.MOSCOW;
-        cityType2 = CityType.KAZAN;
 
         departament = "Ноутбуки, планшеты и компьютеры";
-        category = "/elektronnye-knigi-i-aksessuary/elektronnye-knigi-3935";
+        category = "Электронные книги";
         storeAddress = "ст. м. «Бульвар Дмитрия Донского»";
-        user = new UserAccount("Test", "teste2e340@mail.ru", "8kjkszpj");
+        user = new UserAccount("Уhgraasr", "teste2e407@mail.ru", "8kjkszpj", "", "9045854946");
     }
 
     @Test
@@ -46,24 +44,32 @@ public class E2Esceen001 {
         driver.get(url);
         driver.manage().deleteAllCookies();
         driver.manage().window().maximize();
+        //Проверка регионов
 
-        //new HomePage(driver).checkRegion(cityType1).selectCity(cityType2).checkRegion(cityType2).selectDepartament(departament);
-
-        driver.get(url + category);
-
-        MyProfilePage page = new CategoryPage(driver, category).
-                selectProduct().openStoreListAndFindStoreAndAddProduct(storeAddress).
+        new HomePage(driver).selectCity(cityType1).checkRegion(cityType1);
+        //проверка покупки и регистрации
+        new HomePage(driver).selectDepartmentAndCategory(departament, category).
+                selectProduct().addToBasket(). //openStoreListAndFindStoreAndAddProduct(storeAddress).
                 checkoutOrderForGuest().checkoutWithoutRegister().
-                editDeliveryBlock().setCourierDelivery("Москва", "Улица", "Дом", "Кв").closeDeliveryBlock().
-                editPersonalBlock(user.getMail(), user.getName(), "9046954641").closePersonalBlock().
-                editPaymentBlock().closePaymentBlock().completeOrder().register(user.getPassword()).
-                checkedMsgfirstAutoLoginAfterRegistration(user.getName()).checkedMsgInNotVerifiedProfile(user.getName());
+                editDeliveryBlock().
+                setCourierDelivery("Москва", "Улица", "Дом", "Кв").
+                closeDeliveryBlock().
+                editPersonalBlock(user.getMail(), user.getName(), user.getMobile()).closePersonalBlock().
+                //openDeliveryBlock().openPersonalBlock();
+                editPaymentBlock().
+                closePaymentBlock().completeOrder().checkOrderSummary().register(user.getPassword()).
+                checkedMsgfirstAutoLoginAfterRegistration(user.getName()).
+                checkedMsgInNotVerifiedProfile(user.getName());
+        //Подтверждение регистрации
 
         MailManager mailManager = new MailManager();
         mailManager.setMail(user.getMail(), driver);
+        mailManager.getMail().login(user).findOrderMail();
         mailManager.verifityMail(user).verificationMail(user.getName());
         mailManager.getMail().logOut();
         mailManager.verifityMail(user).secondTryVerificationMail();
+
+        driver.get(url + "/login");
 
         new LoginPage(driver).relogin(user).
                 checkedMsgInMyProfileAfterVerification(user.getName());

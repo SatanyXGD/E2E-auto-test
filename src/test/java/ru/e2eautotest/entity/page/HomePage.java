@@ -73,7 +73,10 @@ public class HomePage extends Page{
 
     //Выбираем город в хидере
     public HomePage selectCity(CityType cityTypeType){
+        LOG.debug(city.getText() + ">>" + cityTypeType.getCity());
         LOG.debug("Раскрываем окно выбора города");
+
+        if(!city.getText().equals(cityTypeType.getCity())) {
         city.click();
         LOG.debug("Выбираем город \"" + cityTypeType.getCity() + "\"");
         WebElement selectCity;
@@ -110,16 +113,17 @@ public class HomePage extends Page{
                 break;
             default: selectCity = moscow;
         }
-        selectCity.click();
+            selectCity.click();
 
-        LOG.debug("Cсылка \"" + getDriver().getCurrentUrl() + "\" должна содержать \""
-                + cityTypeType.getCityID() + "\"");
-        Assert.assertTrue("Не произошел редирект на сайт выбранного региона", getDriver().
-                getCurrentUrl().contains(cityTypeType.getCityID()));
-
+            LOG.debug("Cсылка \"" + getDriver().getCurrentUrl() + "\" должна содержать \""
+                    + cityTypeType.getCityID() + "\"");
+            Assert.assertTrue("Не произошел редирект на сайт выбранного региона", getDriver().
+                    getCurrentUrl().contains(cityTypeType.getCityID()));
+        }
         return this;
     }
 
+    //Выбираем департамент
     public CategoryPage selectDepartament(String departament){
         LOG.debug("Выбираем департамент");
         WebElement element = getDriver().findElement(By.linkText(departament));
@@ -128,6 +132,19 @@ public class HomePage extends Page{
 
 
         return new CategoryPage(getDriver(), "mvideo");
-        //return new CategoryPage(getDriver(), "mvideo");
+    }
+
+    //Выбираем департамент и категорию
+    public CategoryPage selectDepartmentAndCategory(String departamentName, String categoryName){
+        LOG.debug("Выбираем департамент");
+        WebElement departament = getDriver().findElement(By.linkText(departamentName));
+        departament.click();
+
+        LOG.debug("Выбираем категорию");
+        WebElement category = getDriver().findElement(By.linkText(categoryName));
+        String href = category.getAttribute("href");
+        category.click();
+
+        return new CategoryPage(getDriver(), href);
     }
 }

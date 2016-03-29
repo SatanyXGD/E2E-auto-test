@@ -7,13 +7,13 @@ import org.openqa.selenium.support.FindBy;
 import ru.e2eautotest.entity.ConfigManager;
 import ru.e2eautotest.entity.LoggerWrapper;
 import ru.e2eautotest.entity.MsgElement;
-
 import java.util.ArrayList;
 import java.util.List;
 
 public class EmailConfirmationPage extends Page {
     private static final LoggerWrapper LOG = LoggerWrapper.get(EmailConfirmationPage.class);
 
+    //Сообщение "Поздравляем!"
     @FindBy(css = "div.error-content > div.error-text > h3")
     private WebElement congratulation;
 

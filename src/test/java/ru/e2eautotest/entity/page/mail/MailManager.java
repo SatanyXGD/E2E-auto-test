@@ -36,4 +36,6 @@ public class MailManager {
         getMail().findMailAndVerifyRegistration();
         return new EmailConfirmationPage(getMail().getDriver());
     }
+
+
 }

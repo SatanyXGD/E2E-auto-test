@@ -4,13 +4,15 @@ import org.openqa.selenium.WebDriver;
 import ru.e2eautotest.entity.page.account.Account;
 
 public interface Mail {
-    void registration(Account account);
+    Mail registration(Account account);
 
-    void login(Account account);
+    Mail login(Account account);
 
-    void findMailAndVerifyRegistration();
+    Mail findMailAndVerifyRegistration();
 
-    void logOut();
+    Mail findOrderMail();
+
+    Mail logOut();
 
     WebDriver getDriver();
 }

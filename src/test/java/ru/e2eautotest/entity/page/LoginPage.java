@@ -57,7 +57,10 @@ public class LoginPage extends Page {
     public MyProfilePage relogin(Account account) {
         signOut();
         signIn(account);
+        LOG.debug("Переходим в ЛК");
         getDriver().get(getBaseURL() + "/my-account");
+        LOG.debug(getDriver().getCurrentUrl());
+
         return new MyProfilePage(getDriver());
     }
 

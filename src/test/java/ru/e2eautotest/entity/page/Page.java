@@ -22,7 +22,7 @@ public abstract class Page {
         //Проверить, что находимся на верной странице
         LOG.debug("Go to \"" + driver.getCurrentUrl() + "\" | \"" + URL_MATCH + "\"");
         if (!driver.getCurrentUrl().contains(URL_MATCH)) {
-            throw LOG.getIllegalArgumentException("This is not the page are expected",
+            throw LOG.getIllegalArgumentException("This is not the page are expected. " + driver.getCurrentUrl(),
                     new IllegalStateException());
         }
         PageFactory.initElements(driver, this);
