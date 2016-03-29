@@ -1,9 +1,10 @@
 package ru.e2eautotest.entity.page.mail;
 
 import org.openqa.selenium.WebDriver;
+import ru.e2eautotest.entity.Context;
 import ru.e2eautotest.entity.LoggerWrapper;
 import ru.e2eautotest.entity.page.EmailConfirmationPage;
-import ru.e2eautotest.entity.page.account.Account;
+import ru.e2eautotest.entity.account.Account;
 
 
 public class MailManager {
@@ -16,10 +17,11 @@ public class MailManager {
         return mail;
     }
 
-    public void setMail(String email, WebDriver driver) {
+    public void setMail(String email) {
+
         if (email.contains("@mail.ru")) {
-            driver.get("https://mail.ru");
-            mail = new MailRuPage(driver);
+            Context.getInstance().getBrowser().get("https://mail.ru");
+            mail = new MailRuPage(Context.getInstance().getBrowser());
         }
     }
 

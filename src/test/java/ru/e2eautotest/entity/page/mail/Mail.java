@@ -1,7 +1,7 @@
 package ru.e2eautotest.entity.page.mail;
 
 import org.openqa.selenium.WebDriver;
-import ru.e2eautotest.entity.page.account.Account;
+import ru.e2eautotest.entity.account.Account;
 
 public interface Mail {
     Mail registration(Account account);

@@ -5,6 +5,8 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
+import ru.e2eautotest.entity.CityType;
+import ru.e2eautotest.entity.Context;
 import ru.e2eautotest.entity.LoggerWrapper;
 
 public class HomePage extends Page{
@@ -59,9 +61,14 @@ public class HomePage extends Page{
     @FindBy(xpath = "//*[@id=\"header-regions\"]/div/div[1]/div[2]/ul[3]/li[5]/label")
     private WebElement yfa;
 
+    public static HomePage open(){
+        if (!Context.getInstance().getBrowser().getCurrentUrl().
+                equals(Context.getInstance().getSiteUrl())) Context.getInstance().getBrowser().get(Context.getInstance().getSiteUrl());
+        return new HomePage();
+    }
 
-    public HomePage(WebDriver driver) {
-        super(driver, "mvideo.ru");
+    public HomePage() {
+        super(Context.getInstance().getBrowser(), "mvideo.ru");
     }
 
     //Проверка, что система правильно определила регион.

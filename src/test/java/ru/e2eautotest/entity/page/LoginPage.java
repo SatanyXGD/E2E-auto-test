@@ -3,8 +3,9 @@ package ru.e2eautotest.entity.page;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
+import ru.e2eautotest.entity.Context;
 import ru.e2eautotest.entity.LoggerWrapper;
-import ru.e2eautotest.entity.page.account.Account;
+import ru.e2eautotest.entity.account.Account;
 
 public class LoginPage extends Page {
     // Инициализация логера
@@ -24,6 +25,11 @@ public class LoginPage extends Page {
 
     public LoginPage(WebDriver driver) {
         super(driver, "login");
+    }
+
+    public static LoginPage open(){
+        Context.getInstance().getBrowser().get(Context.getInstance().getSiteUrl() + "/login");
+        return new LoginPage(Context.getInstance().getBrowser());
     }
 
     /*

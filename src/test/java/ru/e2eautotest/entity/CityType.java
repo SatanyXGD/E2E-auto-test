@@ -1,4 +1,4 @@
-package ru.e2eautotest.entity.page;
+package ru.e2eautotest.entity;
 
 public enum CityType {
     MOSCOW("Москва", "CityCZ_975"),

@@ -1,4 +1,4 @@
-package ru.e2eautotest.entity.page.account;
+package ru.e2eautotest.entity.account;
 
 public class UserAccount implements Account{
     private String name;

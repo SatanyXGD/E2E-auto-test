@@ -6,12 +6,9 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import ru.e2eautotest.entity.LoggerWrapper;
 import ru.e2eautotest.entity.page.Page;
-import ru.e2eautotest.entity.page.account.Account;
-import java.text.DateFormatSymbols;
-import java.text.SimpleDateFormat;
-import java.util.Date;
+import ru.e2eautotest.entity.account.Account;
+
 import java.util.List;
-import java.util.Locale;
 
 public class MailRuPage extends Page implements Mail {
     // Инициализация логера

@@ -6,13 +6,11 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import ru.e2eautotest.entity.LoggerWrapper;
 
-import java.util.List;
-
 public class PurchasePage extends Page{
     private static final LoggerWrapper LOG = LoggerWrapper.get(PurchasePage.class);
 
     //Кнопка "Закончить оформление"
-    @FindBy(xpath = "/html/body/div[1]/div/div[2]/div/div/div[3]/div/div[1]/div/div/div/div/div/form/input[9]")
+    @FindBy(css = "input.btn.btn-fluid")
     private WebElement completeOrderBtn;
 
     /*
@@ -24,7 +22,7 @@ public class PurchasePage extends Page{
     private WebElement editDeliveryBlockBtn;
 
     //Кнопка "продолжить" у модуля "Способ получения товара"
-    @FindBy(xpath = "//*[@id=\"delivery-form\"]/div/div/div[2]/div[2]/input[5]")
+    @FindBy(css = "div[data-id=deliveryBlocks] > div.nc-step-footer > input.btn.btn-primary.btn-nc-next.js-nc-next")
     private WebElement closeDeliveryBlockBtn;
 
     //Кнопка "изменить" у модуля "Личные данные"

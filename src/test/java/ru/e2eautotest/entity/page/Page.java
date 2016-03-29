@@ -91,6 +91,17 @@ public abstract class Page {
         Assert.assertEquals(expected, actualStr);
     }
 
+    public void assertNotEquals(String expected, WebElement actual) throws AssertionFailedError
+    {
+        String actualStr = "";
+        try{
+            actualStr = actual.getText();
+        }catch (Exception e) {
+            LOG.error("Элемет не содержит текст" ,e);}
+        LOG.debug("expected: \"" + expected + "\" actual: \"" + actualStr + "\"");
+        Assert.assertNotEquals(expected, actualStr);
+    }
+
     public void assertNull(String msg, Object obj){
         Assert.assertNull(msg, obj);
     }

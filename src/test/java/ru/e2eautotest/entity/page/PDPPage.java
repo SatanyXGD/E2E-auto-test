@@ -14,9 +14,21 @@ public class PDPPage extends Page {
     @FindBy(id = "js-form-submit-id")
     private WebElement addToBasketButton;
 
-    //Вкладка "Наличие в магазинах
+    //Вкладка "Наличие в магазинах"
     @FindBy(linkText = "Наличие в магазинах")
     private WebElement storeList;
+
+    //Вкладка "О товаре"
+    @FindBy(linkText = "О товаре")
+    private WebElement aboutProduct;
+
+    //Описание товара
+    @FindBy(css = "div.pds-top-description > p")
+    private WebElement description;
+
+    //Вкладка "Характеристики"
+    @FindBy(linkText = "Характеристики")
+    private WebElement characteristics;
 
     //Кнопка "Посмотреть все"
     @FindBy(xpath = "//*[@id=\"store-locator-list\"]/div[2]/div/div[3]/a")
@@ -27,6 +39,17 @@ public class PDPPage extends Page {
 
     public PDPPage(WebDriver driver, String URL_MATCH) {
         super(driver, URL_MATCH);
+    }
+
+    //Проверить наличие описания товара на вкладке "О товаре"
+    public PDPPage checkDescription()
+    {
+        LOG.debug("Проверить наличие описания товара на вкладке \"О товаре\"");
+
+        LOG.debug(description.getText());
+        assertNotEquals("", description);
+
+        return this;
     }
 
     //Открыть Открыть вкладку "Наличие в магазинах" и найти магазин
