@@ -2,8 +2,6 @@ package ru.e2eautotest.entity.page.mail;
 
 import ru.e2eautotest.entity.Context;
 import ru.e2eautotest.entity.LoggerWrapper;
-import ru.e2eautotest.entity.page.EmailConfirmationPage;
-import ru.e2eautotest.entity.account.Account;
 
 public class MailManager {
     // Инициализация логера

@@ -34,8 +34,14 @@ public class PDPPage extends Page {
     @FindBy(xpath = "//*[@id=\"store-locator-list\"]/div[2]/div/div[3]/a")
     private WebElement showAllButton;
 
+    //Имя магазина
+    private By nameStoreLocator = By.xpath("div[2]/div[1]/div/h2/span/a");
+
     //Локатор для магазинов
     private By storeLocator = By.xpath("//*[@id=\"js-stock-level-tooltips\"]/ul/li");
+
+    //Кнопка "Выбрать" у магазина
+    private By addToBasketInStoreLocator = By.cssSelector("div.store > form");
 
     public PDPPage(WebDriver driver, String URL_MATCH) {
         super(driver, URL_MATCH);
@@ -45,10 +51,8 @@ public class PDPPage extends Page {
     public PDPPage checkDescription()
     {
         LOG.debug("Проверить наличие описания товара на вкладке \"О товаре\"");
-
         LOG.debug(description.getText());
         assertNotEquals("", description);
-
         return this;
     }
 
@@ -57,19 +61,16 @@ public class PDPPage extends Page {
         openStoreList();
         WebElement store = findStore(storeAddress);
         assertNotNull("Не найден магазин " + storeAddress, store);
-
         return this;
     }
 
-    //Открыть Открыть вкладку "Наличие в магазинах" и найти магазин
+    //На вкладке "Наличие в магазине" у магазина нажать "Выбрать"
     public BasketPage openStoreListAndFindStoreAndAddProduct(String storeAddress) {
         LOG.debug("Добавляем товар в корзину, выбрав магазин");
         openStoreList();
         WebElement store = findStore(storeAddress);
-        assertNotNull("Не найден магазин " + storeAddress, store);
-
-        store.findElement(By.cssSelector("div.store > form")).click();
-
+        assertNotNull(String.format("Не найден магазин %s",storeAddress), store);
+        store.findElement(addToBasketInStoreLocator).click();
         return new BasketPage(getDriver());
     }
 
@@ -80,7 +81,6 @@ public class PDPPage extends Page {
         LOG.debug("Открываем вкладку \"Наличие в магазинах\"");
         scrollToElement(storeList);
         storeList.click();
-
         return this;
     }
 
@@ -89,7 +89,6 @@ public class PDPPage extends Page {
         LOG.debug("Добавляем товар в корзину");
         scrollToElement(addToBasketButton);
         addToBasketButton.click();
-
         return new BasketPage(getDriver());
     }
 
@@ -103,7 +102,7 @@ public class PDPPage extends Page {
         }catch (Exception e){}
 
         try {
-            Thread.sleep(3000);
+            Thread.sleep(2000);
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
@@ -111,21 +110,18 @@ public class PDPPage extends Page {
         List<WebElement> stores = findElements(storeLocator);
         //Удаляем шапку таблицы
         stores.remove(0);
-
-        LOG.debug("Найдено " + stores.size() + " магазинов");
-
+        LOG.debug(String.format("Найдено %s магазинов", stores.size()));
         for(WebElement e : stores)
         {
             scrollToElement(e);
-            WebElement name = e.findElement(By.cssSelector("div.name > h3 > a"));
-            LOG.debug("Магазин \"" + name.getText() + "\" является \"" + storeAddress + "\"?");
+            WebElement name = e.findElement(nameStoreLocator);
+            LOG.debug(String.format("Магазин \"%s\" является \"%s\"?", name.getText(), storeAddress));
             if (name.getText().equals(storeAddress)){
                 WebElement stock = e.findElement(By.cssSelector("div.stock > i"));
-                LOG.debug("Наличие товара: " + stock.getAttribute("data-title"));
+                LOG.debug(String.format("Наличие товара: %s", stock.getAttribute("data-title")));
                 if (stock.getAttribute("data-title").equals("На складе"))return e;
             }
         }
-
         return null;
     }
 }

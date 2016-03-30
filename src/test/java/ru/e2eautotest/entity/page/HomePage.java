@@ -2,7 +2,6 @@ package ru.e2eautotest.entity.page;
 
 import org.junit.Assert;
 import org.openqa.selenium.By;
-import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import ru.e2eautotest.entity.CityType;
@@ -63,7 +62,8 @@ public class HomePage extends Page{
 
     public static HomePage open(){
         if (!Context.getInstance().getBrowser().getCurrentUrl().
-                equals(Context.getInstance().getSiteUrl())) Context.getInstance().getBrowser().get(Context.getInstance().getSiteUrl());
+                equals(Context.getInstance().getSiteUrl())) Context.getInstance().getBrowser().
+                get(Context.getInstance().getSiteUrl());
         return new HomePage();
     }
 
@@ -80,12 +80,12 @@ public class HomePage extends Page{
 
     //Выбираем город в хидере
     public HomePage selectCity(CityType cityTypeType){
-        LOG.debug(city.getText() + ">>" + cityTypeType.getCity());
+        LOG.debug(String.format("%s >> %s",city.getText(),cityTypeType.getCity()));
         LOG.debug("Раскрываем окно выбора города");
 
         if(!city.getText().equals(cityTypeType.getCity())) {
         city.click();
-        LOG.debug("Выбираем город \"" + cityTypeType.getCity() + "\"");
+        LOG.debug(String.format("Выбираем город \"%s\"",cityTypeType.getCity()));
         WebElement selectCity;
         switch (cityTypeType){
             case MOSCOW : selectCity = moscow;
@@ -122,23 +122,12 @@ public class HomePage extends Page{
         }
             selectCity.click();
 
-            LOG.debug("Cсылка \"" + getDriver().getCurrentUrl() + "\" должна содержать \""
-                    + cityTypeType.getCityID() + "\"");
+            LOG.debug(String.format("Cсылка \"%s\" должна содержать \"s\"",
+                    getDriver().getCurrentUrl(),cityTypeType.getCityID()));
             Assert.assertTrue("Не произошел редирект на сайт выбранного региона", getDriver().
                     getCurrentUrl().contains(cityTypeType.getCityID()));
         }
         return this;
-    }
-
-    //Выбираем департамент
-    public CategoryPage selectDepartament(String departament){
-        LOG.debug("Выбираем департамент");
-        WebElement element = getDriver().findElement(By.linkText(departament));
-        element.click();
-        //getDriver().get(getDriver().getCurrentUrl() + departament);
-
-
-        return new CategoryPage(getDriver(), "mvideo");
     }
 
     //Выбираем департамент и категорию

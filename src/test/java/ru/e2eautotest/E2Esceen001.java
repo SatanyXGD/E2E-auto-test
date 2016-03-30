@@ -14,7 +14,7 @@ public class E2Esceen001 {
     private CityType cityType1;
     private String departament;
     private String category;
-    private String storeAddress;
+    private String store;
     private UserAccount user;
     private static DeliveryAddress address;
 
@@ -27,7 +27,7 @@ public class E2Esceen001 {
         departament = "Ноутбуки, планшеты и компьютеры";
         category = "Электронные книги";
         //Адрес магазина, где проверяем отсутствие стоков --> "На складе"
-        storeAddress = "ст. м. «Бульвар Дмитрия Донского»";
+        store = "ст. м. «Бульвар Дмитрия Донского»";
         //Адрес доставки
         address = new DeliveryAddress("Москва", "Улица", "Дом", "Кв");
         //Пользователь
@@ -46,8 +46,8 @@ public class E2Esceen001 {
 
         //Открываем категорию
         HomePage.open().selectDepartmentAndCategory(departament, category).
-                selectProduct().checkDescription().addToBasket(). //openStoreListAndFindStoreAndAddProduct(storeAddress).
-                checkoutOrderForGuest().checkoutWithoutRegister().
+                selectProduct().checkDescription().addToBasket(). //openStoreListAndFindStoreAndAddProduct(store).
+                checkoutOrderForGuest().checkoutWithoutRegister().checkAllertInfo().
                 editDeliveryBlock().
                 setCourierDelivery(address).closeDeliveryBlock().checkCourierAddress(address).
                 editPersonalBlock(user).closePersonalBlock().

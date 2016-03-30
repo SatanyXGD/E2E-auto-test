@@ -22,7 +22,7 @@ public class MsgElement {
 
     public void setActual() {
         try {
-            LOG.debug("Веб элемент содержит следующий текст: " + element.getText());
+            LOG.debug(String.format("Веб элемент содержит следующий текст: %s", element.getText()));
             this.actual = element.getText();
         } catch (NullPointerException e) {
             LOG.error("Элемент не содержит текст", e);

@@ -20,10 +20,10 @@ public abstract class Page {
 
     public Page(WebDriver driver, String URL_MATCH) {
         //Проверить, что находимся на верной странице
-        LOG.debug("Go to \"" + driver.getCurrentUrl() + "\" | \"" + URL_MATCH + "\"");
+        LOG.debug(String.format("Go to \"%s\" | \"%s\"", driver.getCurrentUrl(), URL_MATCH));
         if (!driver.getCurrentUrl().contains(URL_MATCH)) {
-            throw LOG.getIllegalArgumentException("This is not the page are expected. " + driver.getCurrentUrl(),
-                    new IllegalStateException());
+            throw LOG.getIllegalArgumentException(String.format("This is not the page are expected. %s",
+                    driver.getCurrentUrl()), new IllegalStateException());
         }
         PageFactory.initElements(driver, this);
         this.driver = driver;
@@ -46,13 +46,13 @@ public abstract class Page {
     }
 
     public void scrollToElement(WebElement webElement) {
-        LOG.debug("Scroll to element " + webElement.getTagName());
+        LOG.debug(String.format("Scroll to element %s", webElement.getTagName()));
         ((JavascriptExecutor) driver).executeScript("arguments[0].scrollIntoView();", webElement);
         ((JavascriptExecutor) driver).executeScript("window.scrollBy(0, -200)");
     }
 
     public WebElement findElement(By locator) {
-        LOG.debug("Поиск элемента по локатору - " + locator.toString());
+        LOG.debug(String.format("Поиск элемента по локатору - %s", locator.toString()));
         try {
             WebElement element = driver.findElement(locator);
             return element;
@@ -63,7 +63,7 @@ public abstract class Page {
     }
 
     public List<WebElement> findElements(By locator) {
-        LOG.debug("Поиск элементов по локатору - " + locator.toString());
+        LOG.debug(String.format("Поиск элементов по локатору - %s", locator.toString()));
         try {
             return driver.findElements(locator);
         } catch (Exception e) {
@@ -74,7 +74,7 @@ public abstract class Page {
 
     public void clearAndSendKey(WebElement element, String text) {
         if(!text.isEmpty()) {
-            LOG.debug("Ввод строки \"" + text + "\" в веб-элемент " + element.getTagName());
+            LOG.debug(String.format("Ввод строки \"%s\" в веб-элемент %s", text, element.getTagName()));
             element.clear();
             element.sendKeys(text);
         }
@@ -87,7 +87,7 @@ public abstract class Page {
             actualStr = actual.getText();
         }catch (Exception e) {
             LOG.error("Элемет не содержит текст" ,e);}
-        LOG.debug("expected: \"" + expected + "\" actual: \"" + actualStr + "\"");
+        LOG.debug(String.format("expected: \"%s\" actual: \"%s\"", expected, actualStr));
         Assert.assertEquals(expected, actualStr);
     }
 
@@ -98,7 +98,7 @@ public abstract class Page {
             actualStr = actual.getText();
         }catch (Exception e) {
             LOG.error("Элемет не содержит текст" ,e);}
-        LOG.debug("expected: \"" + expected + "\" actual: \"" + actualStr + "\"");
+        LOG.debug(String.format("expected: \"%s\" actual: \"%s\"", expected, actualStr));
         Assert.assertNotEquals(expected, actualStr);
     }
 

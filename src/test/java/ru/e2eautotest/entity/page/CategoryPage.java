@@ -16,19 +16,22 @@ public class CategoryPage extends Page{
     @FindBy(css = "div.product-data-rating-code > p")
     private WebElement sku;
 
+    //Линка на PDP
+    private By linkToPDPLocator = By.xpath("div[2]/div[1]/div/h2/span/a");
+
     public CategoryPage(WebDriver driver, String URL_MATCH) {
         super(driver, URL_MATCH);
     }
 
     public PDPPage selectProduct(){
         LOG.debug("Выбираем товар");
-        WebElement linkToPDP = product.findElement(By.xpath("div[2]/div[1]/div/h2/span/a"));
+        WebElement linkToPDP = product.findElement(linkToPDPLocator);
         linkToPDP.click();
 
         String code = sku.getText();
         code = code.substring(code.indexOf("  ")+ 2);
 
-        LOG.debug("\"" + code + "\"");
+        LOG.debug(String.format("SKU \"%s\"", code));
         return new PDPPage(getDriver(), code);
     }
 }

@@ -116,6 +116,10 @@ public class PurchasePage extends Page{
     @FindBy(xpath = "//*[@id=\"delivery-form\"]/div/div/div[2]/div[1]/div/div[2]/div[3]/div[5]/a")
     private WebElement proceedBtn;
 
+    //Информационное сообщение
+    @FindBy(xpath = "/html/body/div[1]/div/div[2]/div/div/div[3]/div/div[2]/div[3]/div/strong")
+    private WebElement allertInfo;
+
 
     public PurchasePage(WebDriver driver) {
         super(driver, "purchase");
@@ -127,10 +131,31 @@ public class PurchasePage extends Page{
         LOG.debug("Заказать без регистрации");
         scrollToElement(checkOutWithoutRegisterButton);
         checkOutWithoutRegisterButton.click();
-
         return this;
     }
 
+    //проверка информационного сообщения
+    public PurchasePage checkAllertInfo(){
+        return checkAllertInfo(null);
+    }
+
+    //проверка информационного сообщения
+    public PurchasePage checkAllertInfo(String userName){
+        LOG.debug("Проверка информационного сообщения");
+        String expected = (userName == null) ? "Вы оформляете заказ как незарегистрированный пользователь." :
+                String.format("Вы оформляете заказ как %s.", userName);
+
+        if(!allertInfo.getText().contains(expected)) {
+            String errorMsg = String.format("Неверное информационное сообщение\n exp: %s | act: %s",
+                    expected, allertInfo.getText());
+            throw LOG.getIllegalStateException(errorMsg, new AssertionError());
+        }
+        return this;
+    }
+
+    /*
+    Способ доставки
+    */
     //Выбрать пикап
     public PurchasePage setPickUpDelivery(String storeName){
         LOG.debug("Выбираем пикап");
@@ -196,6 +221,9 @@ public class PurchasePage extends Page{
         return this;
     }
 
+    /*
+    Личные данные
+    * */
     //Раскрываем блок "Личные данные"
     public PurchasePage openPersonalBlock(){
         LOG.debug("Раскрываем блок \"Личные данные\"");
@@ -230,6 +258,9 @@ public class PurchasePage extends Page{
         return this;
     }
 
+    /*
+    Способ оплаты
+    * */
     //Раскрываем блок "Cпособ оплаты"
     public PurchasePage openPaymentBlock(){
         LOG.debug("Раскрываем блок \"Cпособ оплаты\"");

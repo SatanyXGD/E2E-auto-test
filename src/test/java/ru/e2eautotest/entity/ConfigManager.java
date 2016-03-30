@@ -19,14 +19,13 @@ public class ConfigManager {
     public static Node evaluate (String xPathStr)
     {
         if(document == null) initDocument();
-
         Node node = null;
         try {
             XPathFactory xPathFactory = XPathFactory.newInstance();
             XPath xPath = xPathFactory.newXPath();
             XPathExpression expression = xPath.compile(xPathStr);
             node = (Node) expression.evaluate(document, XPathConstants.NODE);
-            LOG.debug("Чтение из XML: " + node.getTextContent());
+            LOG.debug(String.format("Чтение из XML: %s", node.getTextContent()));
         } catch (XPathExpressionException e) {
             LOG.error("Неудалось прочитать из XML", e);
         }

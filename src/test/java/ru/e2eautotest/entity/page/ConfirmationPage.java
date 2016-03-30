@@ -48,6 +48,7 @@ public class ConfirmationPage extends Page {
     //Проверка деталей заказа
     public ConfirmationPage checkOrderSummary(){
         LOG.debug(numOrder.getText());
+        //добавить проверку саммари заказа
 
         return this;
     }

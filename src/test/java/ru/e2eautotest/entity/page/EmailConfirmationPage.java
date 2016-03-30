@@ -77,7 +77,6 @@ public class EmailConfirmationPage extends Page {
         //Достаем из конфига нотификации
         String msg  = ConfigManager.evaluate("/notification_messages/email_confirm/already_verified").
                 getTextContent();
-        return new MsgElement(congratulation,
-                msg);
+        return new MsgElement(congratulation, msg);
     }
 }

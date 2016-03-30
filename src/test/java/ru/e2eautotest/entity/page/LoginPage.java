@@ -28,7 +28,8 @@ public class LoginPage extends Page {
     }
 
     public static LoginPage open(){
-        Context.getInstance().getBrowser().get(Context.getInstance().getSiteUrl() + "/login");
+        Context.getInstance().getBrowser().get(String.format("%s/login",
+                Context.getInstance().getSiteUrl()));
         return new LoginPage(Context.getInstance().getBrowser());
     }
 
@@ -37,13 +38,12 @@ public class LoginPage extends Page {
     @param user - {@link UserAccount}
     */
     public void signIn(Account account) {
-        LOG.debug("LogIn " + account.getMail() + "|" + account.getPassword());
-
-        getDriver().get(getBaseURL() + "/login");
+        LOG.debug(String.format("LogIn %s | %s", account.getMail(), account.getPassword()));
+        getDriver().get(String.format("%s/login", getBaseURL()));
         clearAndSendKey(emailEdit, account.getMail());
         clearAndSendKey(passwordEdit, account.getPassword());
         logInButton.click();
-        getDriver().get(getBaseURL() + "/my-account");
+        getDriver().get(String.format("%s/my-account", getBaseURL()));
     }
 
     /*
@@ -51,8 +51,7 @@ public class LoginPage extends Page {
     */
     public void signOut() {
         LOG.debug("logOut");
-
-        getDriver().get(getBaseURL() + "/logout.jsp");
+        getDriver().get(String.format("%s/logout.jsp", getBaseURL()));
     }
 
     /*
@@ -64,9 +63,8 @@ public class LoginPage extends Page {
         signOut();
         signIn(account);
         LOG.debug("Переходим в ЛК");
-        getDriver().get(getBaseURL() + "/my-account");
+        getDriver().get(String.format("%s/my-account", getBaseURL()));
         LOG.debug(getDriver().getCurrentUrl());
-
         return new MyProfilePage(getDriver());
     }
 

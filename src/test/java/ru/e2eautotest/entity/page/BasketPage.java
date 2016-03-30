@@ -5,10 +5,6 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import ru.e2eautotest.entity.LoggerWrapper;
 
-
-/**
- * Created by пк on 29.03.2016.
- */
 public class BasketPage extends Page {
     private static final LoggerWrapper LOG = LoggerWrapper.get(BasketPage.class);
 

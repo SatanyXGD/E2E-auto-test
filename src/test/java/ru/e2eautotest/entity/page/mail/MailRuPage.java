@@ -63,7 +63,6 @@ public class MailRuPage extends Page implements Mail {
         driver.findElement(By.id("x_4114c810fa61a495")).clear();
         driver.findElement(By.id("x_4114c810fa61a495")).sendKeys("sdf");
         driver.findElement(By.id("man1")).click();*/
-
         return this;
     }
 
@@ -115,13 +114,13 @@ public class MailRuPage extends Page implements Mail {
 
     //Поиск письма по заголовку
     private WebElement findMail(String header) {
-        LOG.debug("Поиск письма \"" + header + "\"");
+        LOG.debug(String.format("Поиск письма \"%s\"", header));
 
         clearAndSendKey(findEdit, "uat_atg@mvideo.ru");
         searchButton.click();
 
         List<WebElement> mails = findElements(mailLocator);
-        LOG.debug("Найдено " + mails.size() + " элементов");
+        LOG.debug(String.format("Найдено %d элементов",mails.size()));
 
         WebElement result = null;
         for(WebElement mail : mails) {

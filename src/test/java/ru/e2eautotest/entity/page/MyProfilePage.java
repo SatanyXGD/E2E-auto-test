@@ -27,7 +27,6 @@ public class MyProfilePage extends Page {
     */
     public MyProfilePage checkedMsgfirstAutoLoginAfterRegistration(String userName) {
         LOG.debug("Проверка всех сообщений в ЛК сразу после регистрации");
-
         assertEquals(congratulationMsg(userName));
         assertEquals(finalRegistrationMsg());
         assertEquals(notVerifiedMessage());
@@ -42,14 +41,13 @@ public class MyProfilePage extends Page {
     */
     public MyProfilePage checkedMsgInNotVerifiedProfile(String userName) {
         LOG.debug("Проверка всех сообщений в ЛК после рефреша");
-
         getDriver().navigate().refresh();
         assertEquals(welcomeMsg(false, userName));
         assertEquals(notVerifiedMessage());
         assertEquals(howVerifiedMessage());
         assertNotEquals("Не исчезло сообщение", congratulationMsg(userName));
         assertNotEquals("Не исчезло сообщение", finalRegistrationMsg());
-        //может нужен новый объект?
+
         return this;
     }
 
@@ -60,7 +58,6 @@ public class MyProfilePage extends Page {
     */
     public MyProfilePage checkedMsgInMyProfileAfterVerification(String userName) {
         LOG.debug("Проверка всех сообщений в ЛК после верификации");
-
         assertEquals(welcomeMsg(true, userName));
         assertNull(notVerifiedMessage());
         assertNull(howVerifiedMessage());
@@ -131,7 +128,6 @@ public class MyProfilePage extends Page {
     private MsgElement welcomeMsg(Boolean isVerifiedProfile, String userName) {
         By locator = isVerifiedProfile ? By.cssSelector(".my-account-welcome > p:nth-child(1)")
                 : By.cssSelector(".my-account-mix-messages > p");
-
         //Достаем из конфига нотификации
         String msg  = ConfigManager.evaluate("/notification_messages/my_profile/welcome").
                 getTextContent();
