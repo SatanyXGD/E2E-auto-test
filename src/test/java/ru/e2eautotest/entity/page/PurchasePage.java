@@ -4,6 +4,7 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
+import ru.e2eautotest.entity.DeliveryAddress;
 import ru.e2eautotest.entity.LoggerWrapper;
 import ru.e2eautotest.entity.account.UserAccount;
 
@@ -141,23 +142,24 @@ public class PurchasePage extends Page{
     }
 
     //Выбрать доставку курьером
-    public PurchasePage setCourierDelivery(String city, String street, String house, String apartament){
+    public PurchasePage setCourierDelivery(DeliveryAddress address){
         LOG.debug("Выбираем доставку курьером");
         courierRadio.click();
-       // clearAndSendKey(cityEdit, city);
-        clearAndSendKey(streetEdit, street);
-        clearAndSendKey(houseEdit, house);
-        clearAndSendKey(apartmentEdit, apartament);
+        //clearAndSendKey(cityEdit, address.getCity());
+        clearAndSendKey(streetEdit, address.getStreet());
+        clearAndSendKey(houseEdit, address.getHouse());
+        clearAndSendKey(apartmentEdit, address.getApartment());
         proceedBtn.click();
 
         return this;
     }
 
     //Провериить, что система запомнила адресс доставки и время
-    public PurchasePage checkCourierAddress(String city, String street, String house, String apartament){
+    public PurchasePage checkCourierAddress(DeliveryAddress address){
         LOG.debug("Проверяем возможность системы запомнить адресс доставки и время");
 
-        String expected = String.format("%s, %s, %s, %s", city, street, house, apartament);
+        String expected = String.format("%s, %s, %s, %s", address.getCity(), address.getStreet(),
+                address.getHouse(), address.getApartment());
         try {
             Thread.sleep(1000);
         } catch (InterruptedException e) {

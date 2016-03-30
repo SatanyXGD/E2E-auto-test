@@ -3,10 +3,7 @@ package ru.e2eautotest;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
-import ru.e2eautotest.entity.BrowserType;
-import ru.e2eautotest.entity.CityType;
-import ru.e2eautotest.entity.Context;
-import ru.e2eautotest.entity.LoggerWrapper;
+import ru.e2eautotest.entity.*;
 import ru.e2eautotest.entity.page.*;
 import ru.e2eautotest.entity.account.UserAccount;
 import ru.e2eautotest.entity.page.mail.MailManager;
@@ -19,16 +16,21 @@ public class E2Esceen001 {
     private String category;
     private String storeAddress;
     private UserAccount user;
-
+    private static DeliveryAddress address;
 
     @Before
     public void setUp() {
         LOG.debug("Подготовка к тесту");
-
+        //Регион
         cityType1 = CityType.MOSCOW;
+        //Департамент и категория товара
         departament = "Ноутбуки, планшеты и компьютеры";
         category = "Электронные книги";
+        //Адрес магазина, где проверяем отсутствие стоков --> "На складе"
         storeAddress = "ст. м. «Бульвар Дмитрия Донского»";
+        //Адрес доставки
+        address = new DeliveryAddress("Москва", "Улица", "Дом", "Кв");
+        //Пользователь
         user = new UserAccount("Уhgraasr", "teste2e407@mail.ru", "8kjkszpj", "", "9045854946");
         Context.initInstance(BrowserType.FF, "https://www.atguat6.mvideo.ru");
     }
@@ -44,8 +46,8 @@ public class E2Esceen001 {
                 selectProduct().checkDescription().addToBasket(). //openStoreListAndFindStoreAndAddProduct(storeAddress).
                 checkoutOrderForGuest().checkoutWithoutRegister().
                 editDeliveryBlock().
-                setCourierDelivery("Москва", "Улица", "Дом", "Кв").closeDeliveryBlock().
-                checkCourierAddress("Москва", "Улица", "Дом", "Кв").
+                setCourierDelivery(address).closeDeliveryBlock().
+                checkCourierAddress(address).
                 editPersonalBlock(user).closePersonalBlock().
                 editPaymentBlock().closePaymentBlock().
                 completeOrder().checkOrderSummary().register(user.getPassword()).
