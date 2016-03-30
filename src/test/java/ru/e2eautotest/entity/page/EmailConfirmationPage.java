@@ -28,7 +28,7 @@ public class EmailConfirmationPage extends Page {
     @param userName - {@link String}
     @return {@link EmailConfirmationPage}
     */
-    public EmailConfirmationPage verificationMail(String userName) {
+    public EmailConfirmationPage checkVerificationMail(String userName) {
         LOG.debug("Проверка сообщений после перехода по ссылке для подтверждения почты");
         assertEquals(finalVerifiedMessage(userName));
         return this;
@@ -38,7 +38,7 @@ public class EmailConfirmationPage extends Page {
     Проверка сообщений после второго перехода по ссылке для подтверждения почты
     @return {@link EmailConfirmationPage}
     */
-    public EmailConfirmationPage secondTryVerificationMail() {
+    public EmailConfirmationPage checkSecondTryVerificationMail() {
         LOG.debug("Проверка сообщений после второго перехода по ссылке для подтверждения почты");
         assertEquals(errorFinalVerifyMsg());
         return this;

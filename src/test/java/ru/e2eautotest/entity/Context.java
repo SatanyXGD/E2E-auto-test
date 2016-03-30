@@ -5,6 +5,7 @@ import org.openqa.selenium.WebDriver;
 import java.util.concurrent.TimeUnit;
 
 public class Context {
+    private static final LoggerWrapper LOG = LoggerWrapper.get(Context.class);
     private static Context context;
     private static String siteUrl;
 
@@ -14,6 +15,7 @@ public class Context {
     }
 
     public static void initInstance(BrowserType browserType, String siteURL) {
+        LOG.debug("Инифиализация WebDriver");
         if(context == null) {
             context = new Context();
             siteUrl = siteURL;
@@ -23,7 +25,8 @@ public class Context {
     }
     public static Context getInstance() {
         if (context == null) {
-            throw new IllegalStateException("Context is not initialized");
+            throw LOG.getIllegalStateException("WebBrowser is not initialized",
+                    new IllegalStateException());
         }
         return context;
     }
@@ -32,7 +35,8 @@ public class Context {
         if (browser != null) {
             return browser;
         }
-        throw new IllegalStateException("WebBrowser is not initialized");
+        throw LOG.getIllegalStateException("WebBrowser is not initialized",
+                new IllegalStateException());
     }
 
     public String getSiteUrl() {
@@ -45,6 +49,7 @@ public class Context {
     }
 
     private void start(){
+        LOG.debug("Конфигурируем WebDriver");
         browser.manage().timeouts().implicitlyWait(8, TimeUnit.SECONDS);
         browser.get(siteUrl);
         browser.manage().deleteAllCookies();

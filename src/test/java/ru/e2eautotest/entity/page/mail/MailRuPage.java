@@ -5,6 +5,7 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import ru.e2eautotest.entity.LoggerWrapper;
+import ru.e2eautotest.entity.page.EmailConfirmationPage;
 import ru.e2eautotest.entity.page.Page;
 import ru.e2eautotest.entity.account.Account;
 
@@ -40,6 +41,10 @@ public class MailRuPage extends Page implements Mail {
     //кнопка "Подтвердить"
     @FindBy(linkText = "Подтвердить")
     private WebElement acceptButton;
+
+    //Дата получения письма
+    @FindBy(css = "div.b-datalist__item__panel > div.b-datalist__item__date > span")
+    private WebElement sendMailData;
 
     public MailRuPage(WebDriver driver) {
         super(driver, "mail.ru");
@@ -89,13 +94,13 @@ public class MailRuPage extends Page implements Mail {
     /*
     Подтверждение пользователя по письму
     */
-    public MailRuPage findMailAndVerifyRegistration() {
+    public EmailConfirmationPage findMailAndVerifyRegistration() {
         LOG.debug("Подтверждение пользователя по письму");
         WebElement mail = findMail("Пожалуйста, подтвердите вашу регистрацию");
         scrollToElement(mail);
         getDriver().get(String.format("https://e.mail.ru/message/%s", mail.getAttribute("data-id")));
         getDriver().get(acceptButton.getAttribute("href"));
-        return this;
+        return new EmailConfirmationPage(getDriver());
     }
 
     //Поиск письма с информацией о заказе
@@ -141,30 +146,7 @@ public class MailRuPage extends Page implements Mail {
         LOG.debug("Проверка, что мы нашли верное письмо");
         if (!element.getAttribute("data-subject").contains(header)) return false;
         LOG.debug("Проверка даты");
-        WebElement data = element.findElement(By.cssSelector("div.b-datalist__item__panel > div.b-datalist__item__date > span"));
-       /* Locale local = new Locale("ru", "RU");
-        String[] russianMonat = {
-                "января",
-                "февраля",
-                "марта",
-                "апреля",
-                "мая",
-                "июня",
-                "июля",
-                "августа",
-                "сентября",
-                "октября",
-                "ноября",
-                "декабря"
-        };
-        DateFormatSymbols russSymbol = new DateFormatSymbols(local);
-        russSymbol.setMonths(russianMonat);
-        SimpleDateFormat sdf = new SimpleDateFormat("d MMMM", russSymbol);
-        Date currentDate = new Date();
-
-        if (!data.getAttribute("title").contains(sdf.format(currentDate))) return false;*/
-        if (!data.getAttribute("title").contains("Сегодня")) return false;
-
+        if (!sendMailData.getAttribute("title").contains("Сегодня")) return false;
         LOG.debug("Дата соответствует");
         return true;
     }

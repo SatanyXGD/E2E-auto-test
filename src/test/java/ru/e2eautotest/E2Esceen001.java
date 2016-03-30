@@ -33,6 +33,7 @@ public class E2Esceen001 {
         //Пользователь
         user = new UserAccount("Уhgraasr", "teste2e407@mail.ru", "8kjkszpj", "", "9045854946");
         Context.initInstance(BrowserType.FF, "https://www.atguat6.mvideo.ru");
+        MailManager.initInstance(user.getMail());
     }
 
     @Test
@@ -42,12 +43,13 @@ public class E2Esceen001 {
 
         HomePage.open().selectCity(cityType1).checkRegion(cityType1);
         //проверка покупки и регистрации
+
+        //Открываем категорию
         HomePage.open().selectDepartmentAndCategory(departament, category).
                 selectProduct().checkDescription().addToBasket(). //openStoreListAndFindStoreAndAddProduct(storeAddress).
                 checkoutOrderForGuest().checkoutWithoutRegister().
                 editDeliveryBlock().
-                setCourierDelivery(address).closeDeliveryBlock().
-                checkCourierAddress(address).
+                setCourierDelivery(address).closeDeliveryBlock().checkCourierAddress(address).
                 editPersonalBlock(user).closePersonalBlock().
                 editPaymentBlock().closePaymentBlock().
                 completeOrder().checkOrderSummary().register(user.getPassword()).
@@ -56,15 +58,13 @@ public class E2Esceen001 {
 
         //Подтверждение регистрации
 
-        MailManager mailManager = new MailManager();
-        mailManager.setMail(user.getMail());
-        mailManager.getMail().login(user).findOrderMail();
-        mailManager.verifityMail(user).verificationMail(user.getName());
-        mailManager.getMail().logOut();
-        mailManager.verifityMail(user).secondTryVerificationMail();
 
-        LoginPage.open().relogin(user).
-                checkedMsgInMyProfileAfterVerification(user.getName());
+        MailManager.getInstance().getMail().login(user).findOrderMail(). //добавить сравнение письма с суммари заказа
+                login(user).findMailAndVerifyRegistration().checkVerificationMail(user.getName());
+        MailManager.getInstance().getMail().logOut().
+                login(user).findMailAndVerifyRegistration().checkSecondTryVerificationMail();
+
+        LoginPage.open().relogin(user).checkedMsgInMyProfileAfterVerification(user.getName());
     }
 
     @After

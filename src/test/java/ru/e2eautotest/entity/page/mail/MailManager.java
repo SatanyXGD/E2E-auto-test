@@ -1,20 +1,41 @@
 package ru.e2eautotest.entity.page.mail;
 
-import org.openqa.selenium.WebDriver;
 import ru.e2eautotest.entity.Context;
 import ru.e2eautotest.entity.LoggerWrapper;
 import ru.e2eautotest.entity.page.EmailConfirmationPage;
 import ru.e2eautotest.entity.account.Account;
 
-
 public class MailManager {
     // Инициализация логера
     private static final LoggerWrapper LOG = LoggerWrapper.get(MailManager.class);
+    private static MailManager instance;
 
     private Mail mail;
 
+    private MailManager() {}
+
+    public static void initInstance(String mail){
+        LOG.debug("Инифиализация MailManager");
+        if(instance == null) {
+            instance = new MailManager();
+            instance.setMail(mail);
+        }
+    }
+
+    public static MailManager getInstance() {
+        if (instance == null) {
+            throw LOG.getIllegalStateException("MailManager is not initialized",
+                    new IllegalStateException());
+        }
+        return instance;
+    }
+
+
     public Mail getMail() {
-        return mail;
+        if(mail != null) return mail;
+
+        throw LOG.getIllegalStateException("Mail is not initialized",
+                new IllegalStateException());
     }
 
     public void setMail(String email) {
@@ -33,7 +54,6 @@ public class MailManager {
     public EmailConfirmationPage verifityMail(Account account) {
         LOG.debug("Подтверждение зарегистрированного пользователя");
 
-        if (mail == null) throw new NullPointerException("Не установлен тип почтового ящика");
         getMail().login(account);
         getMail().findMailAndVerifyRegistration();
         return new EmailConfirmationPage(getMail().getDriver());
