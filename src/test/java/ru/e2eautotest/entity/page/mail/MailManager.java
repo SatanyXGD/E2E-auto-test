@@ -45,19 +45,4 @@ public class MailManager {
             mail = new MailRuPage(Context.getInstance().getBrowser());
         }
     }
-
-    /*
-    Подтверждение зарегистрированного пользователя
-    @param user - {@link UserAccount}
-    @return {@link EmailConfirmationPage}
-    */
-    public EmailConfirmationPage verifityMail(Account account) {
-        LOG.debug("Подтверждение зарегистрированного пользователя");
-
-        getMail().login(account);
-        getMail().findMailAndVerifyRegistration();
-        return new EmailConfirmationPage(getMail().getDriver());
-    }
-
-
 }
