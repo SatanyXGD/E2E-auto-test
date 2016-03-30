@@ -14,7 +14,6 @@ import ru.e2eautotest.entity.page.mail.MailManager;
 public class E2Esceen001 {
     private static final LoggerWrapper LOG = LoggerWrapper.get(E2Esceen001.class);
 
-    private static String url = "https://www.atguat6.mvideo.ru/";
     private CityType cityType1;
     private String departament;
     private String category;
@@ -25,6 +24,7 @@ public class E2Esceen001 {
     @Before
     public void setUp() {
         LOG.debug("Подготовка к тесту");
+
         cityType1 = CityType.MOSCOW;
         departament = "Ноутбуки, планшеты и компьютеры";
         category = "Электронные книги";
